@@ -1,0 +1,4 @@
+repository "Tetris-Unity@nebulay@cloud.cn"
+  path "/"
+    br "/main"
+    co "/main"
