@@ -23,38 +23,26 @@ public class Ghost : MonoBehaviour
 
     private void LateUpdate()
     {
-        this.Clear();
-        this.Copy();
-        this.Drop();
-        this.Set();
-    }
-
-    private void Clear()
-    {
+        // Clear current ghost
         for (int i = 0; i < this.cells.Length; i++)
         {
             Vector3Int tilePosition = this.cells[i] + this.position;
             this.tilemap.SetTile(tilePosition, null);
         }
-    }
 
-    private void Copy()
-    {
         for (int i = 0; i < this.cells.Length; i++)
         {
             this.cells[i] = this.trackingPiece.cells[i];
         }
-    }
 
-    private void Drop()
-    {
         Vector3Int position = this.trackingPiece.position;
 
         this.position = position;
         int bottom = -this.board.boardSize.y / 2 - 1;
         this.board.Clear(this.trackingPiece);
 
-        while (position.y >= bottom) {
+        while (position.y >= bottom)
+        {
             if (!this.board.IsValidPosition(this.trackingPiece, position))
             {
                 break;
@@ -64,10 +52,8 @@ public class Ghost : MonoBehaviour
         }
 
         this.board.Set(this.trackingPiece);
-    }
 
-    private void Set()
-    {
+        // Set
         for (int i = 0; i < this.cells.Length; i++)
         {
             Vector3Int tilePosition = this.cells[i] + this.position;

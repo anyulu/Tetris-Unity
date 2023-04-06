@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Piece : MonoBehaviour
@@ -16,6 +17,7 @@ public class Piece : MonoBehaviour
 
     public float lockDelay = 0.5f;
 
+    private const float LONG_PRESS_TIME = 1.0f;
     private float stepTime;
     private float lockTime;
 
@@ -27,7 +29,7 @@ public class Piece : MonoBehaviour
         this.rotationIndex = 0;
         this.stepTime = Time.time + this.stepDelay;
         this.lockTime = 0f;
-        this.cells = this.cells == null ? new Vector3Int[data.cells.Length] : this.cells;
+        this.cells ??= new Vector3Int[data.cells.Length];
 
         for (int i = 0; i < data.cells.Length; i++)
         {

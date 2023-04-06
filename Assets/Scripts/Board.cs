@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -13,6 +15,8 @@ public class Board : MonoBehaviour
 
     public Vector2Int boardSize = new Vector2Int(10, 20);
 
+    private List<int> permutations;
+
     public RectInt Bound
     {
         get
@@ -24,6 +28,8 @@ public class Board : MonoBehaviour
 
     public void Awake()
     {
+        Screen.SetResolution(960, 1280, false);
+        this.permutations = this.GetPermutation();
         this.tilemap = GetComponentInChildren<Tilemap>();
         this.activePiece = GetComponentInChildren<Piece>();
 
@@ -45,8 +51,12 @@ public class Board : MonoBehaviour
 
     public void SpawnPiece()
     {
-        //TODO: should be a random permutation of 7
-        int random = Random.Range(0, this.tetrominoDatas.Length);
+        int random = this.permutations[0];
+        this.permutations.RemoveAt(0);
+        if (this.permutations.Count < 7)
+        {
+            this.permutations.AddRange(this.GetPermutation());
+        }
         TetrominoData data = this.tetrominoDatas[random];
         this.activePiece.Initialize(this, this.spawnPosition, data);
 
@@ -147,5 +157,12 @@ public class Board : MonoBehaviour
 
             row++;
         }
+    }
+
+    private List<int> GetPermutation()
+    {
+        List<int> temp = Enumerable.Range(0, this.tetrominoDatas.Length).ToList();
+        var rdm = new System.Random();
+        return temp.OrderBy(i => rdm.Next()).ToList();
     }
 }
